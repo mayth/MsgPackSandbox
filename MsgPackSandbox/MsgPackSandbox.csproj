@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArrayNode.cs" />
+    <Compile Include="EncodingAnalyzer.cs" />
     <Compile Include="MapNode.cs" />
     <Compile Include="MapNodeEqualityComparer.cs" />
     <Compile Include="NilNode.cs" />

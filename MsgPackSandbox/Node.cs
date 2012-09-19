@@ -62,8 +62,14 @@ namespace MsgPackSandbox
             {
                 if (obj.UnderlyingType != typeof(string))
                     return Node.CreateValueNode(obj.ToObject(), obj.UnderlyingType);
-                else
-                    return Node.CreateValueNode(Encoding.Unicode.GetString(obj.AsBinary()), typeof(string));
+
+                // If UnderlyingType is string, try to convert it to string from binary form.
+                bool withBom;
+                bool maybeBinary;
+                var encoding = Sgry.EncodingAnalyzer.Analyze(obj.AsBinary(), out withBom, out maybeBinary);
+                if (maybeBinary)
+                    return Node.CreateValueNode(obj.ToObject(), obj.UnderlyingType);    // EncodingAnalyzer tells that the byte sequence may be binary (not string).
+                return Node.CreateValueNode(encoding.GetString(obj.AsBinary()), typeof(string));
             }
         }
 
